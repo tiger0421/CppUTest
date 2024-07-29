@@ -3,7 +3,11 @@
 
 #ifdef __cplusplus
 extern "C" {
-    extern int add(int a, int b);
+#endif  // __cplusplus
+
+int add(int a, int b);
+
+#ifdef __cplusplus
 }
 #endif  // __cplusplus
 
