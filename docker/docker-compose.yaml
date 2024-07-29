@@ -1,0 +1,12 @@
+services:
+  cppu_test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cppu_test
+    container_name: cpptest
+    restart: always
+    working_dir: /root/workspace
+    tty: true
+    volumes:
+      - ../workspace:/root/workspace:rw
