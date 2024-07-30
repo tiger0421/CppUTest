@@ -1,6 +1,6 @@
 #include "CppUTest/TestHarness.h"
 #include "CppUTest/CommandLineTestRunner.h"
-#include "../autoGen/add.h"
+#include "add.h"
 
 TEST_GROUP(Addition)
 {
