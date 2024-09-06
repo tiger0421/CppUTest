@@ -3,11 +3,15 @@
 #include "CppUTestExt/MockSupport_c.h"
 #include "mock.h"
 
+extern int port;
+extern int bit;
+
 TEST_GROUP(TestGroup1)
 {
     TEST_SETUP() {
     }
     TEST_TEARDOWN() {
+        mock_c()->checkExpectations();
         mock_c()->clear();
     }
 };
@@ -25,17 +29,45 @@ TEST_GROUP(TestGroup1)
 /* using mock */
 TEST(TestGroup1, Test1)
 {
-    const int port = 0;
-    const int bit  = 1;
     int ret;
+    port = 0;
+    bit  = 0;
     mock_c()
         ->expectOneCall("read_sw")
-        ->withIntParameters("port", 0)
-        ->withIntParameters("bit", 1)
+        ->withIntParameters("port", port)
+        ->withIntParameters("bit", bit)
         ->andReturnIntValue(1);
     ret = is_sw_push();
 
     CHECK_EQUAL(1, ret);
+}
+
+TEST(TestGroup1, step0)
+{
+    eStep ret;
+    port = 0;
+    bit  = 0;
+
+    mock_c()
+        ->expectOneCall("read_sw")
+        ->withIntParameters("port", port)
+        ->withIntParameters("bit", bit)
+        ->andReturnIntValue(0);
+    ret = step_0(STEP_0);
+
+    CHECK_EQUAL(STEP_0, ret);
+
+    port = 1;
+    bit  = 1;
+
+    mock_c()
+        ->expectOneCall("read_sw")
+        ->withIntParameters("port", port)
+        ->withIntParameters("bit", bit)
+        ->andReturnIntValue(1);
+    ret = step_0(STEP_0);
+
+    CHECK_EQUAL(STEP_1, ret);
 }
 
 int read_sw(const int port, const int bit)
